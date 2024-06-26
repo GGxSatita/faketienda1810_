@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from 'src/app/services/product.service';
 import { Router } from '@angular/router';
+import { Product } from 'src/app/interfaces/product';
 
 
 @Component({
@@ -25,15 +26,18 @@ export class AddProductPage implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   onSubmit() {
     if (this.productForm.valid) {
-      this.productService.addProduct(this.productForm.value).subscribe(() => {
+      const product: Product = {
+        ...this.productForm.value,
+        dateAdded: '' // La fecha se establecerá en el servicio
+      };
+
+      this.productService.addProduct(product).subscribe(() => {
         this.router.navigate(['/products']);
       });
     }
   }
-
 }

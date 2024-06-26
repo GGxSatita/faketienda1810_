@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Reporte de Productos</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="products"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="onSubmit()" [formGroup]="reportForm">
+    <ion-item>
+      <ion-label>Fecha de Inicio</ion-label>
+      <ion-datetime formControlName="startDate" displayFormat="YYYY-MM-DD"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>Fecha de Fin</ion-label>
+      <ion-datetime formControlName="endDate" displayFormat="YYYY-MM-DD"></ion-datetime>
+    </ion-item>
+    <ion-button expand="full" type="submit" [disabled]="!reportForm.valid">Generar Reporte</ion-button>
+  </form>
+
+  <ion-list *ngIf="products.length > 0">
+    <ion-item *ngFor="let product of products">
+      <ion-thumbnail slot="start">
+        <img [src]="product.image">
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ product.name }}</h2>
+        <p>{{ product.price | currency }}</p>
+        <p>Fecha de Agregado: {{ product.dateAdded | date: 'short' }}</p>
+      </ion-label>
+    </ion-item>
+    <ion-button expand="full" color="primary" (click)="generatePdf()">Descargar Reporte en PDF</ion-button>
+  </ion-list>
+</ion-content>

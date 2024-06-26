@@ -20,7 +20,23 @@ export class ProductService {
   }
 
   addProduct(product: Product): Observable<Product> {
+    product.dateAdded = new Date().toISOString();
     return this.http.post<Product>(this.apiUrl, product);
   }
 
+  updateProduct(product: Product): Observable<Product> {
+    return this.http.put<Product>(`${this.apiUrl}/${product.id}`, product);
+  }
+
+  getProductById(id: number): Observable<Product> {
+    return this.http.get<Product>(`${this.apiUrl}/${id}`);
+  }
+
+  getProductsByDateRange(startDate: string, endDate: string): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.apiUrl}?dateAdded_gte=${startDate}&dateAdded_lte=${endDate}`);
+  }
+
+  deleteProduct(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }
